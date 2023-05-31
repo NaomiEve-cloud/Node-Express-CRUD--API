@@ -32,11 +32,23 @@ const getAllUsers = async () => {
   };
   try {
     const { Items = [] } = await dynamoClient.scan(params).promise();
-    return { success: true, data: Items };
+    
+    // Remove "S" and "N" attributes from the data
+    const transformedData = Items.map(item => {
+      const transformedItem = {};
+      for (const [key, value] of Object.entries(item)) {
+        const attributeValue = Object.values(value)[0];
+        transformedItem[key] = attributeValue;
+      }
+      return transformedItem;
+    });
+    
+    return { success: true, data: transformedData };
   } catch (error) {
     return { success: false, data: null };
   }
 };
+
 
 // READ SINGLE USER ON KEY(id)
 const getUser = async (value, key = "id") => {
@@ -48,11 +60,20 @@ const getUser = async (value, key = "id") => {
   };
   try {
     const { Item = {} } = await dynamoClient.get(params).promise();
-    return { success: true, data: Item };
+    
+    // Remove "S" and "N" attributes from the data
+    const transformedItem = {};
+    for (const [key, value] of Object.entries(Item)) {
+      const attributeValue = Object.values(value)[0];
+      transformedItem[key] = attributeValue;
+    }
+    
+    return { success: true, data: transformedItem };
   } catch (error) {
     return { success: false, data: null };
   }
 };
+
 
 // Delete Existing User
 const deleteUser = async (value, key = "id") => {
