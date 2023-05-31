@@ -1,7 +1,7 @@
 
 #Register User
 POST http://localhost:5000/api/auth/register
-content-type: application/json
+Content-Type: application/json
 
 {
     "full_name": "Eva",
@@ -12,6 +12,8 @@ content-type: application/json
     "age": 25,
     "password": "Admin@234"
 }
+
+
 
 #Login User
 

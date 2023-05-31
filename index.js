@@ -3,6 +3,7 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const cors = require("cors");
+const helmet = require("helmet");
 // import users  from './routes/register';
 const users = require("./routes/users");
 const auth = require("./routes/auth");
@@ -18,6 +19,7 @@ app.use(logger("dev"));
 app.use(express.json({ limit: "2mb" }));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(helmet());
 
 app.get("/", (req, res) => {
   res.send(`
