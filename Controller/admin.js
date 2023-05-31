@@ -2,11 +2,9 @@ const dynamoClient = require("../helpers/awsconnetion");
 const bcrypt = require("bcrypt");
 const uuid = require("uuid");
 const { registerSchema, loginSchema } = require("../schema/users.schema");
-const sendEmail = require("../helpers/notificationSender");
 const { generateToken } = require("../helpers/authToken");
-const log = require("../helpers/logger.helper");
 
-const TABLE_NAME = "UsersTable";
+const TABLE_NAME = "AdminTable";
 
 const register = async (req, res) => {
   //Check if payload is not empty.
@@ -41,7 +39,7 @@ const register = async (req, res) => {
       } else {
         //if yes, throw an error message
         if (data.Items.length > 0) {
-          res.status(404).send({ error: "User already exist!!!" });
+          res.status(404).send({ error: "Admin already exist!!!" });
         } else {
           // else continue with user creation/update logic
 
@@ -71,15 +69,7 @@ const register = async (req, res) => {
             if (err) {
               return { success: false, error: err.message };
             } else {
-              const message = `
-            <div style="text-align:center; padding-top:40px;">
-            <h1>Welcome to the Gold Grid family</h1>
-            <p>Thank you for filling out the form!</p>
-            </div>
-            `;
-
-              await sendEmail(reggisterData.email, "Welcome Email", message);
-              return res.json({ message: "User Registered successfully!!" });
+              return res.json({ message: "Admin Registered successfully!!" });
             }
           });
         }
@@ -124,7 +114,7 @@ const login = async (req, res) => {
 
       // If no user found, return error message
       if (data.Items.length === 0) {
-        return res.status(404).send({ error: "User does not exist!!" });
+        return res.status(404).send({ error: "Admin does not exist!!" });
       }
 
       // Compare passwords if they match
@@ -132,6 +122,8 @@ const login = async (req, res) => {
       const newPassword = storedUser.password.S;
 
       const match = await bcrypt.compare(loginData.password, newPassword);
+
+      console.log(match);
 
       if (!match) {
         return res.status(401).send({ error: "Invalid Password" });
@@ -147,15 +139,6 @@ const login = async (req, res) => {
         },
         "60m"
       );
-
-      // Log
-      const _log = {
-        id: storedUser.id,
-        full_name: storedUser.full_name,
-        nationality: storedUser.nationality,
-        email: storedUser.email,
-      };
-      await log(_log, req);
 
       return res.json({ message: "Login successful!", token });
     });
