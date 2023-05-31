@@ -4,7 +4,8 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 // import users  from './routes/register';
-const users = require('./routes/register')
+const users = require('./routes/users')
+const auth = require('./routes/auth')
 
 
 
@@ -30,8 +31,8 @@ app.get('/', (req, res) => {
     `);
   });
   
-
-app.use('/api', users );
+  app.use('/api/auth', auth );
+app.use('/api/user', users );
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`)
