@@ -1,0 +1,53 @@
+
+#Register User
+POST http://localhost:5000/api/auth/register
+content-type: application/json
+
+{
+    "full_name": "Eva",
+    "email": "njoreeva@yahoo.com",
+    "nationality": "Kenya",
+    "occupation": "Teacher",
+    "marital_status": "Married",
+    "age": 25,
+    "password": "Admin@234"
+}
+
+#Login User
+
+POST http://localhost:5000/api/auth/login
+content-type: application/json
+
+{
+    "email": "njoreeva@yahoo.com",
+    "password": "Admin@234"
+}
+
+#Register Admin
+POST http://localhost:5000/api/admin/register
+content-type: application/json
+
+{
+    "full_name": "Eva",
+    "email": "njoreeva@yahoo.com",
+    "nationality": "Kenya",
+    "occupation": "Teacher",
+    "marital_status": "Married",
+    "age": 25,
+    "password": "Admin@234"
+}
+
+#Login User
+
+POST http://localhost:5000/api/admin/login
+content-type: application/json
+
+{
+    "email": "njoreeva@yahoo.com",
+    "password": "Admin@234"
+}
+
+#Get all users
+GET http://localhost:5000/api/users/
+content-type: application/json
+Authorization: `Bearer token`
