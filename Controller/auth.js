@@ -1,20 +1,10 @@
 
-const AWS = require('aws-sdk');
+const dynamoClient = require('../helpers/awsconnetion')
 const bcrypt = require("bcrypt");
 const uuid = require("uuid");
-
-
 const  {registerSchema, loginSchema} = require('../schema/users.schema')
 const sendEmail = require("../helpers/notificationSender");
 
-//Aws Connection
-AWS.config.update({
-    region: 'us-east-1',
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  });
-  
-  const dynamoClient = new AWS.DynamoDB();
   
   const TABLE_NAME = "RegisterTable";
 
