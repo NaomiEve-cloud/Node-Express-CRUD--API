@@ -41,12 +41,14 @@ const getAllUsers = async (email) => {
 
     const { Items = [] } = await dynamoClient.scan(params).promise();
 
-    // Remove "S" and "N" attributes from the data
+    // Remove "S" and "N" attributes from the data and exclude "password" field
     const transformedData = Items.map((item) => {
       const transformedItem = {};
       for (const [key, value] of Object.entries(item)) {
-        const attributeValue = Object.values(value)[0];
-        transformedItem[key] = attributeValue;
+        if (key !== "password") {
+          const attributeValue = Object.values(value)[0];
+          transformedItem[key] = attributeValue;
+        }
       }
       return transformedItem;
     });
